@@ -1,4 +1,8 @@
+
+
+
 # paste-as-string-array README
+![CI](https://github.com/shadyboukhary/vscode-paste-as-string-array/actions/workflows/ci.yaml/badge.svg)
 
 This is the README for your extension "paste-as-string-array". After writing up a brief description, we recommend including the following sections.
 
