@@ -16,6 +16,7 @@ suite("Extension Test Suite", async () => {
       "--arg1": `"--arg1"`,
       "--arg1 --arg2 --arg3": `"--arg1","--arg2","--arg3"`,
       "--arg1 1 --arg2 2 --arg3 3": `"--arg1","1","--arg2","2","--arg3","3"`,
+      "--arg1        1 --arg2 2 --arg3 3": `"--arg1","1","--arg2","2","--arg3","3"`,
     };
     for (let [key, value] of Object.entries(testStrings)) {
       let filepath = path.join(__dirname, '../../../resources/test.txt');
