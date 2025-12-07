@@ -34,7 +34,8 @@ export async function pasteAsStringArray(editor: TextEditor, _edit?: TextEditorE
     });
 
     if (!sepPick) {
-      separatorChoice = (defaultSeparator === 'newline' ? 'newline' : defaultSeparator === 'special' ? 'special' : 'whitespace');
+      // user cancelled the separator pick -> cancel the whole operation
+      return;
     } else {
       separatorChoice = sepPick.value === 'newline' ? 'newline' : sepPick.value === 'special' ? 'special' : 'whitespace';
       if (separatorChoice === 'special') {
@@ -42,10 +43,9 @@ export async function pasteAsStringArray(editor: TextEditor, _edit?: TextEditorE
           prompt: 'Enter the special separator string (e.g. "," or ";")',
           value: defaultSpecialSeparator
         });
-        if (!input) {
-          // cancelled, fall back to default separator
-          separatorChoice = (defaultSeparator === 'newline' ? 'newline' : defaultSeparator === 'special' ? 'special' : 'whitespace');
-          specialSeparatorValue = defaultSpecialSeparator;
+        if (input === undefined) {
+          // user cancelled the special-separator input -> cancel the whole operation
+          return;
         } else {
           specialSeparatorValue = input;
         }
@@ -96,8 +96,8 @@ export async function pasteAsStringArray(editor: TextEditor, _edit?: TextEditorE
     });
 
     if (!pick) {
-      // user cancelled the pick -> use default
-      chosen = (defaultQuote === 'single') ? 'single' : 'double';
+      // user cancelled the quote pick -> cancel the whole operation
+      return;
     } else {
       chosen = pick.value === 'single' ? 'single' : 'double';
     }

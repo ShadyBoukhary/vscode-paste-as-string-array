@@ -11,9 +11,9 @@
     "name": "Koray Bilgi",
     "email": "kbilgi@meeticore.com"
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "engines": {
-    "vscode": "^1.75.0"
+    "vscode": "^1.71.0"
   },
   "categories": [
     "Other"
@@ -23,23 +23,23 @@
     "commands": [
       {
         "command": "advanced-paste-as-string-array.pasteAsStringArray",
-        "title": "Paste as String Array"
-      }
-      ,
+        "title": "Paste as String Array",
+        "category": "Paste As",
+        "icon": {
+          "light": "resources/icon-light.svg",
+          "dark": "resources/icon-dark.svg"
+        }
+      },
       {
         "command": "advanced-paste-as-string-array.pasteAsStringArray.short",
-        "title": "String Array"
+        "title": "String Array",
+        "category": "Paste As",
+        "icon": {
+          "light": "resources/icon-light.svg",
+          "dark": "resources/icon-dark.svg"
+        }
       }
     ],
-    "keybindings": [
-      {
-        "command": "paste-as-string-array.pasteAsStringArray",
-        "key": "ctrl+alt+v",
-        "mac": "shift+cmd+v",
-        "linux": "ctrl+alt+v"
-      }
-    ]
-    ,
     "submenus": [
       {
         "id": "advanced-paste-as-string-array.pasteAs",
@@ -120,7 +120,8 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "test": "node ./out/test/runTest.js",
+    "vsix": "npx vsce package"
   },
   "devDependencies": {
     
