@@ -30,7 +30,7 @@ export async function pasteAsStringArray(editor: TextEditor, _edit?: TextEditorE
       { label: 'Whitespace', detail: 'Split on any whitespace', value: 'whitespace' },
       { label: 'Special character', detail: 'Provide a custom separator', value: 'special' }
     ].map(i => ({ label: i.label, description: i.detail, value: (i as any).value } as any)), {
-      placeHolder: 'Choose separator for pasted text'
+      placeHolder: 'Choose separator for copied text'
     });
 
     if (!sepPick) {
@@ -106,10 +106,33 @@ export async function pasteAsStringArray(editor: TextEditor, _edit?: TextEditorE
     chosen = (defaultQuote === 'single') ? 'single' : 'double';
   }
 
+  // Prompt for paste format: single-line or multi-line
+  const promptForFormat = config.get<boolean>('promptForFormat', true);
+  const defaultFormat = config.get<string>('defaultFormat', 'single');
+  let formatChoice: 'single' | 'multi' = 'single';
+  if (promptForFormat) {
+    const fmtPick = await vscode.window.showQuickPick([
+      { label: 'Single-line', detail: 'Paste all items on one line', value: 'single' },
+      { label: 'Multi-line', detail: 'Paste each item on its own line', value: 'multi' }
+    ].map(i => ({ label: i.label, description: i.detail, value: (i as any).value } as any)), {
+      placeHolder: 'Choose paste format'
+    });
+
+    if (!fmtPick) {
+      // user cancelled -> cancel the whole operation
+      return;
+    } else {
+      formatChoice = fmtPick.value === 'single' ? 'single' : 'multi';
+    }
+  } else {
+    formatChoice = (defaultFormat === 'single') ? 'single' : 'multi';
+  }
+
   let str: string;
+  const joiner = formatChoice === 'multi' ? ',\n' : ', ';
   if (chosen === 'double') {
-    // use JSON.stringify so escapes for double-quoted strings are correct
-    str = JSON.stringify(items).slice(1, -1);
+    // build each item with JSON.stringify so escapes are correct, then join
+    str = items.map((s) => JSON.stringify(s)).join(joiner);
   } else {
     // build single-quoted representation: convert each item from JSON escaping
     str = items
@@ -122,7 +145,7 @@ export async function pasteAsStringArray(editor: TextEditor, _edit?: TextEditorE
         inner = inner.replace(/'/g, "\\'");
         return "'" + inner + "'";
       })
-      .join(', ');
+      .join(joiner);
   }
 
   editor.selections.forEach((selection, _) => {

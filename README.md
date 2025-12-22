@@ -66,10 +66,14 @@ You can customize output preferences in `settings.json`:
   "paste-as-string-array.defaultSeparator": "newline",
   // Works only if defaultSeparator is "special"
   "paste-as-string-array.defaultSpecialSeparator": ",",
+  // Default paste format: ["single", "multi"]
+  "paste-as-string-array.defaultFormat": "single",
   // Show quote style options when pasting
   "paste-as-string-array.promptForQuote": true,
   // Show separator options when pasting
-  "paste-as-string-array.promptForSeparator": true
+  "paste-as-string-array.promptForSeparator": true,
+  // Show format options when pasting
+  "paste-as-string-array.promptForFormat": true
 }
 ```
 
