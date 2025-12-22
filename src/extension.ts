@@ -59,8 +59,9 @@ export async function pasteAsStringArray(editor: TextEditor, _edit?: TextEditorE
   // Split clipboard content according to chosen separator
   let items: string[] = [];
   if (separatorChoice === 'newline') {
+    // split on CRLF (\r\n), LF (\n) or CR (\r) sequences
     items = clipboardContent
-      .split(/\r?\n+/)
+      .split(/\r\n|[\r\n]+/)
       .map(s => s.trim())
       .filter(s => s !== '');
   } else if (separatorChoice === 'whitespace') {

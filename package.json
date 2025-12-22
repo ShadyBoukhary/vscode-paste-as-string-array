@@ -11,7 +11,7 @@
     "name": "Koray Bilgi",
     "email": "kbilgi@meeticore.com"
   },
-  "version": "1.0.1",
+  "version": "1.0.2",
   "engines": {
     "vscode": "^1.71.0"
   },
@@ -121,7 +121,8 @@
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js",
-    "vsix": "npx vsce package"
+    "vsix": "npx vsce package",
+    "package:vsix": "npm run compile && npx vsce package"
   },
   "devDependencies": {
     
