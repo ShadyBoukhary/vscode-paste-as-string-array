@@ -17,6 +17,7 @@ export async function pasteAsStringArray(editor: TextEditor, edit?: TextEditorEd
     clipboardContent
       .trim()
       .split(" ")
+      .filter(value => value !== "")
       .map((value) => value.toString())
   ).slice(1, -1);
 
