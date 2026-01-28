@@ -1,61 +1,144 @@
 {
-  "name": "paste-as-string-array",
-  "displayName": "Paste as String Array",
-  "description": "Paste text as string array",
-  "publisher": "shadyboukhary",
+  "name": "advanced-paste-as-string-array",
+  "displayName": "Advanced Paste as String Array",
+  "icon": "images/icon.png",
+  "description": "Paste text as string array with single or double quotes, line breaks and commas.",
+  "publisher": "koraybilgi",
   "repository": {
-    "url": "https://github.com/ShadyBoukhary/vscode-paste-as-string-array"
+    "url": "https://github.com/koraybilgi/vscode-paste-as-string-array"
   },
   "author": {
-    "name": "Shady Boukhary",
-    "email": "sb199898.sb@gmail.com"
+    "name": "Koray Bilgi",
+    "email": "kbilgi@meeticore.com"
   },
-  "version": "1.0.0",
+  "version": "1.0.3",
   "engines": {
     "vscode": "^1.71.0"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onCommand:paste-as-string-array.pasteAsStringArray"
-  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "paste-as-string-array.pasteAsStringArray",
-        "title": "Paste as String Array"
+        "command": "advanced-paste-as-string-array.pasteAsStringArray",
+        "title": "Paste as String Array",
+        "category": "Paste As",
+        "icon": {
+          "light": "resources/icon-light.svg",
+          "dark": "resources/icon-dark.svg"
+        }
+      },
+      {
+        "command": "advanced-paste-as-string-array.pasteAsStringArray.short",
+        "title": "String Array",
+        "category": "Paste As",
+        "icon": {
+          "light": "resources/icon-light.svg",
+          "dark": "resources/icon-dark.svg"
+        }
       }
     ],
-    "keybindings":[
+    "submenus": [
       {
-        "command": "paste-as-string-array.pasteAsStringArray",
-        "key": "ctrl+alt+v",
-        "mac": "shift+cmd+v",
-        "linux": "ctrl+alt+v"
+        "id": "advanced-paste-as-string-array.pasteAs",
+        "label": "Paste As"
       }
-    ]
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "submenu": "advanced-paste-as-string-array.pasteAs",
+          "when": "editorTextFocus"
+        }
+      ],
+      "editor/title": [
+        {
+          "submenu": "advanced-paste-as-string-array.pasteAs",
+          "when": "editorTextFocus",
+          "group": "navigation"
+        }
+      ],
+      "explorer/context": [
+        {
+          "submenu": "advanced-paste-as-string-array.pasteAs",
+          "when": "resourceLangId == plaintext || resourceLangId == markdown || explorerViewletVisible",
+          "group": "navigation"
+        }
+      ],
+      "advanced-paste-as-string-array.pasteAs": [
+        {
+          "command": "advanced-paste-as-string-array.pasteAsStringArray.short",
+          "when": "editorTextFocus"
+        }
+      ]
+    }
+    ,
+    "configuration": {
+      "type": "object",
+      "title": "Paste as String Array",
+      "properties": {
+        "paste-as-string-array.promptForQuote": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show a dropdown to pick single or double quotes when pasting."
+        },
+        "paste-as-string-array.defaultQuote": {
+          "type": "string",
+          "enum": ["double", "single"],
+          "default": "double",
+          "description": "Default quote style to use when not prompting."
+        }
+        ,
+        "paste-as-string-array.promptForSeparator": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show a dropdown to pick the separator (whitespace, new line, or special character)."
+        },
+        "paste-as-string-array.defaultSeparator": {
+          "type": "string",
+          "enum": ["whitespace", "newline", "special"],
+          "default": "whitespace",
+          "description": "Default separator to use when not prompting."
+        },
+        "paste-as-string-array.defaultSpecialSeparator": {
+          "type": "string",
+          "default": ",",
+          "description": "Default special separator string to use when defaultSeparator is 'special'."
+        }
+      }
+    }
   },
+  "activationEvents": [
+    "onCommand:paste-as-string-array.pasteAsStringArray",
+    "onCommand:paste-as-string-array.pasteAsStringArray.short"
+  ],
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "test": "node ./out/test/runTest.js",
+    "vsix": "npx vsce package",
+    "package:vsix": "npm run compile && npx vsce package"
   },
   "devDependencies": {
+    
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^24.10.1",
     "@types/vscode": "^1.71.0",
-    "@types/glob": "^7.2.0",
-    "@types/mocha": "^9.1.1",
-    "@types/node": "16.x",
-    "@typescript-eslint/eslint-plugin": "^5.31.0",
-    "@typescript-eslint/parser": "^5.31.0",
-    "eslint": "^8.20.0",
-    "glob": "^8.0.3",
-    "mocha": "^10.0.0",
-    "typescript": "^4.7.4",
-    "@vscode/test-electron": "^2.1.5"
+    "@typescript-eslint/eslint-plugin": "^8.48.1",
+    "@typescript-eslint/parser": "^8.48.1",
+    "@vscode/test-electron": "^2.1.5",
+    "eslint": "^9.39.1",
+    "glob": "^13.0.0",
+    "mocha": "^11.7.5",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@types/minimatch": "^6.0.0",
+    "minimatch": "^10.1.1"
   }
 }
